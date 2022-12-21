@@ -5,7 +5,8 @@
     "lib": ["ES2015", "DOM"],
     "strict": true,
     "types": ["jest"],
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": "./",
   },
   // only compile the production TS files
   "include": ["src/*.ts"],

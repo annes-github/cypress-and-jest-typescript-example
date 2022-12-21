@@ -1,13 +1,10 @@
 import { AmazonMusicHomePage } from '../page-objects/amazon-music-home-page'
 import { AmazonMusicNavbar } from '../page-objects/amazon-music-navbar'
-import { AmazonMusicPodcastPage } from '../page-objects/amazon-music-podcast-page'
-import { AmazonMusicSearchPage } from '../page-objects/amazon-music-search-page'
 import * as data from '../helpers/data'
+require('cypress-xpath')
 
-let amazonMusicHomePage = new AmazonMusicHomePage()
-let amazonMusicNavbar = new AmazonMusicNavbar()
-let amazonMusicSearchPage = new AmazonMusicSearchPage()
-let amazonMusicPodcastPage = new AmazonMusicPodcastPage()
+const amazonMusicHomePage = new AmazonMusicHomePage()
+const amazonMusicNavbar = new AmazonMusicNavbar()
 
 describe('Test the user can search for and select a podcast', () => {
 
@@ -20,25 +17,9 @@ describe('Test the user can search for and select a podcast', () => {
         cy.title().should('eq', data.podcastPageTitle)
     })
 
-    it('Should display the podcast submitted in the search in the Top Results section', async () => {
+    it('Should display results for the podcast submitted in the search', async () => {
         amazonMusicNavbar.search(data.podcastName)
-        amazonMusicSearchPage.clickOnTitleBySection(data.podcastName, 'Top Results')
-        cy.get(amazonMusicPodcastPage.podcastHeadline).should('eq', data.podcastName)
-    })
-
-    it('Should display the podcast submitted in the search in the Podcasts section', async () => {
-        amazonMusicNavbar.search(data.podcastName)
-        amazonMusicSearchPage.clickOnTitleBySection(data.podcastName, 'Podcasts')
-        cy.get(amazonMusicPodcastPage.podcastHeadline).should('eq', data.podcastName)
-    })
-
-    it('Should play the podcast selected', async () => {
-        amazonMusicNavbar.search(data.podcastName)
-        amazonMusicSearchPage.clickOnTitleBySection(data.podcastName, 'Top Results')
-        amazonMusicPodcastPage.clickOnPlayButton()
-        cy.get(amazonMusicPodcastPage.pauseButton).should('be.visible')
-        cy.get(amazonMusicPodcastPage.volumeButton).should('be.visible')
-
+        expect(cy.xpath('//*[contains(text(),"TestGuild Automation Testing Podcast")]').should('contain.text', data.podcastName))
     })
 
 })
